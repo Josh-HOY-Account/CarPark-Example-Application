@@ -19,5 +19,7 @@ class Config:
     Days_In_Month = 31
     Days_In_Year = 365
     PriceInDays = False
+    StaticChargePerDay = True
     HandlePaymentInternal = True #Will Display Payment declined Currently as there is no code wrote in Utils.CarPark.HandlePayments
     CardDatabase_FileName = "CardDetails.db"
+    PreviousVehicle_Database_FileName = "PreviousVehicle.db"

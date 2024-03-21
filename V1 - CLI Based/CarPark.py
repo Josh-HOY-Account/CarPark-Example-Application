@@ -117,9 +117,8 @@ try:
                         if Vehicle[I-1]['NumberPlate'] == NumberPlate:
                             Vehicle_Type = Vehicle[I-1]['Vehicle_Type']
                             print(Vehicle[I-1])
-                            Cost = CarPark.RunBilling(Vehicle[I-1])
-                            CarPark.HandlePayment(Vehicle[I-1],Cost)
-                            print("Payment Due: "+Config.Currency+str(Cost))
+                            Cost,LeaveTime,LeaveDate = CarPark.RunBilling(Vehicle[I-1])
+                            CarPark.HandlePayment(Vehicle[I-1],Cost,LeaveTime,LeaveDate)
                             Vehicle.pop(I)
                             SpacesUsed[Vehicle_Type]['Occupied'] -= 1
                             Config.RunValid_DeleteVehicle=False
