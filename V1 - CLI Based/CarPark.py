@@ -5,20 +5,22 @@ def Program():
 try:
     def Menu_MainMenu():
         print("----------------------------------------------------------------------------------------")
-        print("\t\tParking Management System")
+        print("                               Parking Management System                                ")
         print("----------------------------------------------------------------------------------------")
-        print("1.Vehicle Entry")
-        print("2.Remove Entry" )
-        print("3.View Parked Vehicle ")
-        print("4.View Left Parking Space ")
-        print("5.View Parking Rates ")
-        print("6.Close Programme ")
-        print("+---------------------------------------------+")
+        print("1.    Vehicle Entry")#
+        print("2.    Remove Entry" )#
+        print("3.    View Parked Vehicle ")
+        print("4.    View Left Parking Space ")#
+        print("5.    View Parking Rates ")#
+        print("6.    Close Programme ")#
+        print("+-------------------------------------------------------------------------------------+")
         MenuOption = int(input("\tSelect option:"))
         if MenuOption == 1:
             Menu_SaveCar()
         elif MenuOption == 2:
             Menu_DeleteVehicle()
+        elif MenuOption == 3:
+            Menu_ShowParkedSpaces()
         elif MenuOption == 4:
             Menu_ShowSpacesLeft()
         elif MenuOption ==5:
@@ -151,7 +153,18 @@ try:
             V = V +1
             print(f"*{V}.{I}      {C}"+str(P['Price'])+ " / Hour")
         print("----------------------------------------------------------------------------------------------------------------------")
-  
+    def Menu_ShowParkedSpaces():
+        print("----------------------------------------------------------------------------------------------------------------------")
+        print("\t\t\t\tParked Vehicle")
+        print("----------------------------------------------------------------------------------------------------------------------")
+        print("Vehicle No.\tVehicle Type\t\t\tOwner Name\t\tDate\t\t\tTime")
+        print("----------------------------------------------------------------------------------------------------------------------")
+        for i in range(len(Vehicle)):
+            print(Vehicle[i]['NumberPlate'],"\t\t",Vehicle[i]['Vehicle_Type'],"\t\t\t\t",Vehicle[i]['Owner_Name'],"\t\t\t",Vehicle[i]['Arrival']['Date'],"\t\t",Vehicle[i]['Arrival']['Time'])
+        print("----------------------------------------------------------------------------------------------------------------------")
+        print("------------------------------------------ Total Records - ",len(Vehicle),"-------------------------------------------------------")
+        print("----------------------------------------------------------------------------------------------------------------------")
+        Menu_MainMenu()
 except KeyboardInterrupt:
     print("Restarting Program")
     Program()
