@@ -215,7 +215,45 @@ class CarPark:
     def HandlePayment(VehicleData:dict,Cost:float):
         from Data import Config
         if Config.HandlePaymentInternal:
-            #Payment Code Here:
+            try:
+                cardNumber = input("Please Enter Card Number: ")
+                ExpireM = input("Please Enter Expiry Month Eg. XX 10: ")
+                ExpireY = input("Please Enter Expiry Year Eg. XXXX 2026: ")
+                CVV = input("Please Enter your CVV: ")
+                Name = input("Please Enter the Name on the Account: ")
+                card_values = {
+                'card_number': cardNumber,
+                'card_holder': Name,
+                'expiration_date': ExpireM+"/"+ExpireY,
+                'cvv': CVV
+                }
+                from Utils import CarPark
+                CarPark.Write_Card_Details_To_Database(card_values)
+            except:
+                return "Failed"
             return "OK"
         else:
-            return "Failed" #Once Code Wrote please Change this to be OK and Failed to be on a Failed Transaction or Error
+            return "OK" #Once Code Wrote please Change this to be OK and Failed to be on a Failed Transaction or Error
+    def Write_Card_Details_To_Database(values):
+        import sqlite3
+        from Data import Config
+        # Connect to the database (creates it if not exists)
+        conn = sqlite3.connect(Config.CardDatabase_FileName)
+        cursor = conn.cursor()
+
+        # Create a table if not exists
+        cursor.execute('''CREATE TABLE IF NOT EXISTS CardDetails (
+                            id INTEGER PRIMARY KEY,
+                            card_number TEXT,
+                            card_holder TEXT,
+                            expiration_date TEXT,
+                            cvv TEXT
+                        )''')
+
+        # Insert values into the table
+        cursor.execute('''INSERT INTO CardDetails (card_number, card_holder, expiration_date, cvv)
+                        VALUES (:card_number, :card_holder, :expiration_date, :cvv)''', values)
+        
+        # Commit changes and close connection
+        conn.commit()
+        conn.close()
