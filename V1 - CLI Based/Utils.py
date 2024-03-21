@@ -1,0 +1,221 @@
+import datetime
+import os
+class Files:
+    class Config:
+        Flag = "--- Config File ---"
+        def Append(Text,State):
+            if os.path.exists("Config.cfg"):
+                #print("debug Point 1")
+                f = open("Config.cfg", "a")
+                TempRead = Files.Config.ReadLine(1)
+                if TempRead.__contains__(Files.Config.Flag):
+                    #print("debug Point 2")
+                    f.write(Text + ":"+ State +":\n")
+                else:
+                    f.write(Files.Config.Flag + ":\n")
+                    f.write(Text + ":"+ State +":\n")
+                    #print("debug Point 3")
+                f.close()
+                
+            else:
+                f = open("Config.cfg", "x")
+                f.close()
+                Files.Config.Append(Text,State)  
+
+
+        def Dump():
+            f = open("Config.cfg", "r")
+            dump = f.read()
+            lines = dump.split("\n")
+            State = str(lines).split(":")
+            f.close()
+            return State
+
+        def ReadLine(line):
+            arr = Files.Config.Dump()
+            output = arr[line - 1]
+            return output
+        def Read(Search):
+            dump = Files.Config.Dump()
+            for i in range(0, len(Search)):
+                if (i % 2) == 1:
+                    cleaned = dump[i].split("[")
+                    print(cleaned[0])
+                elif (i % 2) == 0:
+                    cleaned = dump[i].split("'")
+                    print(cleaned[0])
+                i = i + 1
+class Array:
+    def Write(Store:list,Index:int,Data):
+        Store.append(Store[Index])
+        Store[Index] = Data
+    def Append(Store,Data):
+        Store.append(Data)
+    def Remove(Store,Index):
+        del Store[Index]
+    def Clear(Store):
+        Store.clear()
+class Input:
+    def ReadString():
+        Read = str(input())
+        return Read
+    def ReadInt():
+        Read = int(input())
+        return Read
+    def ReadBool():
+        Read = bool(input())
+        return Read
+    def ReadAny():
+        Read = input()
+        return Read
+class Time:
+    x = datetime.datetime.now()
+    shortday = x.strftime("%a")
+    longday = x.strftime("%A")
+    day = x.strftime("%d")
+    month = x.strftime("%m")
+    year = x.strftime("%Y")
+    hour = x.strftime("%H")
+    Min = x.strftime("%M")
+    shortmonthname = x.strftime("%b")
+    longmonthname = x.strftime("%B")
+
+    def GetTime():
+        return(Time.hour + ":" + Time.Min)
+
+    def GetDay(Text):
+        return(Time.longday)
+    
+    def GetDate():
+            return(""+Time.day+"/"+Time.month+"/"+Time.year)
+
+    def GetDT():
+        date = Time.GetDate()
+        time = Time.GetTime()
+        return(date + " " + time)
+
+
+class CarPark:
+    def ValidPlate(UsersPlate,Checker):
+        SysCheckBits = 0
+        CheckBits = 0
+        ResultsUser = []
+        ResultsSys = []
+        for I in range(0,len(UsersPlate)):
+            if UsersPlate[I] == "-":
+                ResultsUser.append(I)
+                CheckBits = CheckBits + 1
+        for S in range(0,len(Checker)):
+            if str(Checker[S]) == "-":
+                ResultsSys.append(S)
+                SysCheckBits = SysCheckBits + 1
+        if CheckBits == SysCheckBits:
+            for R in range(0,len(ResultsUser)):
+                if ResultsUser[R] == ResultsSys[R]:
+                    pass
+                else:
+                    return "Error"
+            return "Done"
+        else:
+            return "Error"
+    def RunBilling(VehicleData:dict):
+        print(".............................................................. Generating Bill ..........................................................................")
+        from Data import Settings,Config
+        Days = 0
+        Months = 0
+        Years = 0
+        Cost =0
+        DaysElapsed =0
+        DifInHours = 0
+        Type = VehicleData['Vehicle_Type']
+        ATimeDate = VehicleData['Arrival']
+        if Config.UseAutomaticTime:
+            LeaveTime = Time.GetTime()
+            LeaveDate = Time.GetDate()
+            LeaveDay = LeaveDate.split("/")[0]
+            LeaveMonth = LeaveDate.split("/")[1]
+            LeaveYear = LeaveDate.split("/")[2]
+            Leave_date_object = datetime.datetime.strptime(LeaveDay+"-"+LeaveMonth+"-"+LeaveYear, '%d-%m-%Y').date()
+            LeaveHour = LeaveTime.split(":")[0]
+            LeaveMin = LeaveTime.split(":")[1]
+        else:
+            LeaveDate = input("Please Enter The Leave Date Eg, xx-xx-xx dd-mm-yy, or leave blank to use Todays Date: ("+str(Time.GetDate())+")")
+            LeaveTime = input("Please Enter the Leave Time, Eg. xx:xx hh:mm")
+            if not LeaveDate: #Checks that LeaveDate is Blank if it is then LeaveDate is None neaning it would eval to False
+                LeaveDate = Time.GetDate()
+            elif LeaveDate.__contains__("-"):
+                if len(LeaveDate.split("-")) == 3:
+                    LeaveDay = LeaveDate.split("-")[0]
+                    LeaveMonth = LeaveDate.split("-")[1]
+                    LeaveYear = LeaveDate.split("-")[2]
+                    Leave_date_object = datetime.datetime.strptime(LeaveDay+"-"+LeaveMonth+"-"+LeaveYear, '%d-%m-%Y').date()
+            if len(LeaveTime.split(":")) == 2:
+                LeaveHour = LeaveTime.split(":")[0]
+                LeaveMin = LeaveTime.split(":")[1]
+        ArrivalDate = ATimeDate["Date"]
+        ArrivalTime = ATimeDate["Time"]
+        date_string = Leave_date_object.strftime('%Y-%m-%d')
+        print("Arrival At: "+ ArrivalDate,ArrivalTime," Leave At: "+date_string+" "+LeaveHour+":"+LeaveMin)
+        ArrivalDay = ArrivalDate.split("/")[0]
+        ArrivalMonth = ArrivalDate.split("/")[1]
+        ArrivalYear = ArrivalDate.split("/")[2]
+        if ArrivalDay == LeaveDay:
+            if ArrivalMonth == LeaveMonth:
+                if ArrivalYear == LeaveYear:
+                    print("Leave Same Day")
+                else:
+                    print("Static Charged Applied")
+                    
+        if int(LeaveMonth) > int(ArrivalMonth):
+            Months = int(LeaveMonth) - int(ArrivalMonth)
+            if LeaveMonth == 2:
+                DaysInMonth = Config.Days_In_Feb
+            else:
+                DaysInMonth = Config.Days_In_Month
+        if int(LeaveDay) > int(ArrivalDay):
+            Days = int(LeaveDay) - int(ArrivalDay)
+        if int(LeaveYear) > int(ArrivalYear):
+            Years = int(LeaveYear) - int(ArrivalYear)
+            DaysInYear = Config.Days_In_Year
+        if Months != 0:
+            for i in range(0,Months):
+                DaysElapsed = DaysElapsed + DaysInMonth
+        if Years != 0:
+            for i in range(0,Years):
+                DaysElapsed = DaysElapsed + DaysInYear
+        DaysElapsed = DaysElapsed + Days
+        if DaysElapsed > Config.ParkingExpire:
+            DaysOver = DaysElapsed - Config.ParkingExpire
+            if Config.StaticChargePerDay:
+                for i in range(0,DaysOver):
+                    Cost = Cost + Config.StaticCharge
+            else:
+                Cost = Cost + Config.StaticCharge
+            for i in range(0,DaysElapsed):
+                if Config.PriceInDays:
+                    Cost = Cost + Settings[Type]['Price']
+                else:
+                    UpdatedCost = Settings[Type]['Price'] * Config.WorkLength
+                    Cost = Cost + UpdatedCost
+        else:
+            for i in range(0,DaysElapsed):
+                if Config.PriceInDays:
+                    Cost = Cost + Settings[Type]['Price']
+                else:
+                    UpdatedCost = Settings[Type]['Price'] * Config.WorkLength
+                    Cost = Cost + UpdatedCost
+        if DaysElapsed == 0:
+            if Config.PriceInDays:
+                Cost = Cost + Settings[Type]['Price']
+            else:
+                DifInHours = int(LeaveHour) - int(ArrivalTime.split(":")[0])
+                UpdatedCost = Settings[Type]['Price'] * DifInHours
+                Cost = Cost + UpdatedCost
+        return Cost.__round__(2)
+    def HandlePayment(VehicleData:dict,Cost:float):
+        from Data import Config
+        if Config.HandlePaymentInternal:
+            #Payment Code Here:
+            return "OK"
+        else:
+            return "Failed" #Once Code Wrote please Change this to be OK and Failed to be on a Failed Transaction or Error
