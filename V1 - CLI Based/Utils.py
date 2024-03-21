@@ -211,9 +211,10 @@ class CarPark:
                 DifInHours = int(LeaveHour) - int(ArrivalTime.split(":")[0])
                 UpdatedCost = Settings[Type]['Price'] * DifInHours
                 Cost = Cost + UpdatedCost
-        return Cost.__round__(2)
-    def HandlePayment(VehicleData:dict,Cost:float):
+        return Cost.__round__(2),LeaveTime,LeaveDate
+    def HandlePayment(VehicleData:dict,Cost:float,LeaveTime, LeaveDate):
         from Data import Config
+        print("Payment Due: "+Config.Currency+str(Cost))
         if Config.HandlePaymentInternal:
             try:
                 cardNumber = input("Please Enter Card Number: ")
@@ -225,10 +226,13 @@ class CarPark:
                 'card_number': cardNumber,
                 'card_holder': Name,
                 'expiration_date': ExpireM+"/"+ExpireY,
-                'cvv': CVV
+                'cvv': CVV,
+                'Amount_Paid': Cost
                 }
                 from Utils import CarPark
-                CarPark.Write_Card_Details_To_Database(card_values)
+                ID = CarPark.Write_Card_Details_To_Database(card_values)
+                VehicleDetails ={'NumberPlate':VehicleData['NumberPlate'],'Owner_Name':VehicleData['Owner_Name'], 'vehicle_type':VehicleData['Vehicle_Type'], 'ArrivalTime':VehicleData['Arrival']['Time'], 'ArrivalDate':VehicleData['Arrival']['Date'], 'TotalAmountDue':Cost, 'PaymentID':ID, 'LeaveTime':LeaveTime, 'LeaveDate':LeaveDate}
+                CarPark.Write_Previous_Vehicle_To_Database(VehicleDetails)
             except:
                 return "Failed"
             return "OK"
@@ -237,23 +241,69 @@ class CarPark:
     def Write_Card_Details_To_Database(values):
         import sqlite3
         from Data import Config
+        print("Running A")
         # Connect to the database (creates it if not exists)
         conn = sqlite3.connect(Config.CardDatabase_FileName)
+        print("Running A1")
         cursor = conn.cursor()
-
+        print("Running A2")
         # Create a table if not exists
         cursor.execute('''CREATE TABLE IF NOT EXISTS CardDetails (
                             id INTEGER PRIMARY KEY,
                             card_number TEXT,
                             card_holder TEXT,
                             expiration_date TEXT,
-                            cvv TEXT
+                            cvv TEXT,
+                            Amount_Paid REAL
+                        )''')
+        print("Running A3")
+        id = cursor.lastrowid
+        print("Running A4")
+        print(values)
+        # Insert values into the table
+        # Assuming values is a dictionary
+        values_tuple = (values['card_number'], values['card_holder'], values['expiration_date'], values['cvv'], values['Amount_Paid'])
+
+        # Then execute the query
+        cursor.execute('''
+            INSERT INTO CardDetails (card_number, card_holder, expiration_date, cvv, Amount_Paid)
+            VALUES (?, ?, ?, ?, ?)
+        ''', values_tuple)
+
+
+        print("Running A5")
+        # Commit changes and close connection
+        conn.commit()
+        conn.close()
+        print(str(id))
+        return id
+
+    def Write_Previous_Vehicle_To_Database(values):
+        import sqlite3
+        from Data import Config
+        print("Running B")
+        # Connect to the database (creates it if not exists)
+        conn = sqlite3.connect(Config.PreviousVehicle_Database_FileName)
+        cursor = conn.cursor()
+
+        # Create a table if not exists
+        cursor.execute('''CREATE TABLE IF NOT EXISTS PreviousVehicle (
+                            space_id INTEGER PRIMARY KEY,
+                            NumberPlate TEXT,
+                            Owner_Name TEXT,
+                            vehicle_type TEXT,
+                            ArrivalTime TEXT,
+                            ArrivalDate TEXT,
+                            TotalAmountDue TEXT,
+                            PaymentID TEXT,
+                            LeaveTime TEXT,
+                            LeaveDate TEXT
                         )''')
 
         # Insert values into the table
-        cursor.execute('''INSERT INTO CardDetails (card_number, card_holder, expiration_date, cvv)
-                        VALUES (:card_number, :card_holder, :expiration_date, :cvv)''', values)
-        
+        cursor.execute('''INSERT INTO PreviousVehicle (NumberPlate, Owner_Name, vehicle_type, ArrivalTime, ArrivalDate, TotalAmountDue, PaymentID, LeaveTime, LeaveDate)
+                    VALUES (:NumberPlate, :Owner_Name, :vehicle_type, :ArrivalTime, :ArrivalDate, :TotalAmountDue, :PaymentID, :LeaveTime, :LeaveDate)''', values)
+        print(str(cursor.arraysize))
         # Commit changes and close connection
         conn.commit()
         conn.close()
