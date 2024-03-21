@@ -20,3 +20,4 @@ class Config:
     Days_In_Year = 365
     PriceInDays = False
     HandlePaymentInternal = True #Will Display Payment declined Currently as there is no code wrote in Utils.CarPark.HandlePayments
+    CardDatabase_FileName = "CardDetails.db"
