@@ -210,6 +210,7 @@ class CarPark:
                 UpdatedCost = Settings[Type]['Price'] * DifInHours
                 Cost = Cost + UpdatedCost
         return Cost.__round__(2),LeaveTime,LeaveDate
+    
     def HandlePayment(VehicleData:dict,Cost:float,LeaveTime, LeaveDate):
         from Data import Config
         print("Payment Due: "+Config.Currency+str(Cost))
