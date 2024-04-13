@@ -41,15 +41,9 @@ class Menu:
     def DeleteMenu():
         NumberPlate=input(f"Enter vehicle number to Delete({Config.PlateFormat}) - ").upper()
         if Checks.Numberplate_Format(NumberPlate):
-            for I in range(0,len(Vehicle)+1):
-                if Vehicle[I-1]['NumberPlate'] == NumberPlate:
-                    Vehicle_Type = Vehicle[I-1]['Vehicle_Type']
-                    print(Vehicle[I-1])
-                    Cost,LeaveTime,LeaveDate = CarPark.RunBilling(Vehicle[I-1])
-                    CarPark.HandlePayment(Vehicle[I-1],Cost,LeaveTime,LeaveDate)
-                    Vehicle.pop(I)
-                    SpacesUsed[Vehicle_Type]['Occupied'] -= 1
-                    Config.RunValid_DeleteVehicle=False
+            for VehicleID in range(0,len(Vehicle)+1):
+                if Vehicle[VehicleID-1]['NumberPlate'] == NumberPlate:
+                    DeleteCar(VehicleID-1)
                     print("............................................................Removed Sucessfully..................................................................")
 
 
@@ -90,9 +84,20 @@ class Menu:
 def SaveCar(Details:dict,StationID:str):
     Array.Append(Vehicle,{'NumberPlate':Details['NumberPlate'],'Vehicle_Type':Details['Vehicle_Type'],'Owner_Name':Details['OwnerName'],'Arrival':{'Date':Time.GetDate(),'Time':Time.GetTime()},'Station':StationID})
     print("\n...Record detail saved...")
-    Menu.ParkedSpaces()
+
+def Billing(VehicleID):
+    Vehicle_Type = Vehicle[int(VehicleID)]['Vehicle_Type']
+    ArrivalDTDict = Vehicle[int(VehicleID)]['Arrival']
+    Cost,LeaveTime,LeaveDate = CarPark.RunBilling(Vehicle_Type,ArrivalDTDict)
+    CarPark.HandlePayment(Vehicle[int(VehicleID)],Cost,LeaveTime,LeaveDate)
+
+def DeleteCar(VehicleID):
+    Vehicle.pop(VehicleID+1)
+    Vehicle_Type = Vehicle[int(VehicleID)]['Vehicle_Type']
+    SpacesUsed[Vehicle_Type]['Occupied'] -= 1
 
 
+    
 class Checks:
     def Numberplate_Format(NumberPlate):
         if NumberPlate == "":

@@ -118,7 +118,7 @@ class CarPark:
             return "Done"
         else:
             return "Error"
-    def RunBilling(VehicleData:dict):
+    def RunBilling(Type:str,ArrivalTimeDate:dict):
         print(".............................................................. Generating Bill ..........................................................................")
         from Data import Settings,Config
         Days = 0
@@ -127,8 +127,6 @@ class CarPark:
         Cost =0
         DaysElapsed =0
         DifInHours = 0
-        Type = VehicleData['Vehicle_Type']
-        ATimeDate = VehicleData['Arrival']
         if Config.UseAutomaticTime:
             LeaveTime = Time.GetTime()
             LeaveDate = Time.GetDate()
@@ -152,8 +150,8 @@ class CarPark:
             if len(LeaveTime.split(":")) == 2:
                 LeaveHour = LeaveTime.split(":")[0]
                 LeaveMin = LeaveTime.split(":")[1]
-        ArrivalDate = ATimeDate["Date"]
-        ArrivalTime = ATimeDate["Time"]
+        ArrivalDate = ArrivalTimeDate["Date"]
+        ArrivalTime = ArrivalTimeDate["Time"]
         date_string = Leave_date_object.strftime('%Y-%m-%d')
         print("Arrival At: "+ ArrivalDate,ArrivalTime," Leave At: "+date_string+" "+LeaveHour+":"+LeaveMin)
         ArrivalDay = ArrivalDate.split("/")[0]
