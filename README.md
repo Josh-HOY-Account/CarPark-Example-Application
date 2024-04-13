@@ -1,7 +1,7 @@
 # CarPark-Example-Application
 Created For L2 and L3 Python Programming Class
 
-[![CodeQL](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/codeql.yml/badge.svg)](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/codeql.yml)[![Python application](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/python-app.yml/badge.svg)](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/python-app.yml)
+[![CodeQL](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/codeql.yml/badge.svg)](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/codeql.yml)[![Python application](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/python-app.yml/badge.svg?event=pull_request)](https://github.com/Josh-HOY-Account/CarPark-Example-Application/actions/workflows/python-app.yml)
 
 Please Note Currently The Program has been Manually Tested and has Passed, Automatic Testing Is Currrently Not Supported
 ## Car Park Example Application
