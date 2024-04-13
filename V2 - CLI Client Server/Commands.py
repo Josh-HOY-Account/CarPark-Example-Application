@@ -36,7 +36,7 @@ class Menu:
                         Types.append(Key)
                     Vehicle_Type = Types[Vtype - 1]
                     Details = {'NumberPlate':NumberPlate,'Vehicle_Type':Vehicle_Type,'OwnerName':Name}
-                    SaveCar(Details,StationID)
+                    SaveVehicle(Details,StationID)
 
     def DeleteMenu():
         NumberPlate=input(f"Enter vehicle number to Delete({Config.PlateFormat}) - ").upper()
@@ -81,7 +81,7 @@ class Menu:
         print("----------------------------------------------------------------------------------------------------------------------")
 
 
-def SaveCar(Details:dict,StationID:str):
+def SaveVehicle(Details:dict,StationID:str):
     Array.Append(Vehicle,{'NumberPlate':Details['NumberPlate'],'Vehicle_Type':Details['Vehicle_Type'],'Owner_Name':Details['OwnerName'],'Arrival':{'Date':Time.GetDate(),'Time':Time.GetTime()},'Station':StationID})
     print("\n...Record detail saved...")
 
@@ -97,7 +97,7 @@ def DeleteCar(VehicleID):
     SpacesUsed[Vehicle_Type]['Occupied'] -= 1
 
 
-    
+
 class Checks:
     def Numberplate_Format(NumberPlate):
         if NumberPlate == "":
