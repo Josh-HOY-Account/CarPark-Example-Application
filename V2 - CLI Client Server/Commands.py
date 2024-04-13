@@ -92,7 +92,7 @@ def Billing(VehicleID):
     CarPark.HandlePayment(Vehicle[int(VehicleID)],Cost,LeaveTime,LeaveDate)
 
 def DeleteCar(VehicleID):
-    Vehicle.pop(VehicleID+1)
+    Vehicle.pop(VehicleID-1)
     Vehicle_Type = Vehicle[int(VehicleID)]['Vehicle_Type']
     SpacesUsed[Vehicle_Type]['Occupied'] -= 1
 
