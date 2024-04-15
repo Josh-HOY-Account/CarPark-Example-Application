@@ -13,6 +13,9 @@ Please Note Currently The Program has been Manually Tested and has Passed, Autom
 ## Installation
 This Program Uses [Python 3.11+](https://www.python.org/downloads/) to run. and Might not work on older Verions
 
+## Support
+if you would like to help improve the GUI Desgin in V3, please check the Templates Folder i have provided the .bin file created by [visualtk](https://visualtk.com/) if you would like to import it, i have also provided the exported .py file for testing **Please Note** the layout was used only for the X and Y coordinates of the Elements.
+
 ~~~
 git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/ &&
 cd CarPark-Example-Application &&
