@@ -85,8 +85,6 @@ def SaveVehicle(Details:dict,StationID:str):
     Array.Append(Vehicle,{'NumberPlate':Details['NumberPlate'],'Vehicle_Type':Details['Vehicle_Type'],'Owner_Name':Details['OwnerName'],'Arrival':{'Date':Time.GetDate(),'Time':Time.GetTime()},'Station':StationID})
     print("\n...Record detail saved...")
     SpacesUsed[Details['Vehicle_Type']]['Occupied'] += 1
-    for Type,Val in SpacesUsed.items():
-        print(f"Spaces Available for {Type} - ",str(Val['Occupied'])+"/"+str(Val['Allowed']))
 
 def Billing(VehicleID):
     Vehicle_Type = Vehicle[int(VehicleID)]['Vehicle_Type']
