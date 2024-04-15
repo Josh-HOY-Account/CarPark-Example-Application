@@ -19,3 +19,15 @@ cd CarPark-Example-Application
 cd "V1 - CLI Based"
 py CarPark.py
 ~~~
+~~~
+git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/
+cd CarPark-Example-Application
+cd "V2 - Commands"
+py CarPark.py
+~~~
+~~~
+git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/
+cd CarPark-Example-Application
+cd "V3 - GUI"
+py CarPark.py
+~~~
