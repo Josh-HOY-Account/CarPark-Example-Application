@@ -13,15 +13,8 @@ Please Note Currently The Program has been Manually Tested and has Passed, Autom
 ## Installation
 This Program Uses [Python 3.11+](https://www.python.org/downloads/) to run. and Might not work on older Verions
 
-```sh
-git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/
-```
-```sh
+~~~
 cd CarPark-Example-Application
-```
-```sh
 cd "V1 - CLI Based"
-```
-```sh
 py CarPark.py
-```
+~~~
