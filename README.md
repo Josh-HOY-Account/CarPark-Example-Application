@@ -14,20 +14,20 @@ Please Note Currently The Program has been Manually Tested and has Passed, Autom
 This Program Uses [Python 3.11+](https://www.python.org/downloads/) to run. and Might not work on older Verions
 
 ~~~
-git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/
-cd CarPark-Example-Application
-cd "V1 - CLI Based"
+git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/ &&
+cd CarPark-Example-Application &&
+cd "V1 - CLI Based" &&
 py CarPark.py
 ~~~
 ~~~
-git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/
-cd CarPark-Example-Application
-cd "V2 - Commands"
+git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/ &&
+cd CarPark-Example-Application &&
+cd "V2 - Commands" &&
 py CarPark.py
 ~~~
 ~~~
-git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/
-cd CarPark-Example-Application
-cd "V3 - GUI"
-py CarPark.py
+git clone https://github.com/Josh-HOY-Account/CarPark-Example-Application/ &&
+cd CarPark-Example-Application &&
+cd "V3 - GUI" &&
+py gui.py
 ~~~
