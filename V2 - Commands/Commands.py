@@ -83,6 +83,7 @@ class Menu:
 
 def SaveVehicle(Details:dict,StationID:str):
     Array.Append(Vehicle,{'NumberPlate':Details['NumberPlate'],'Vehicle_Type':Details['Vehicle_Type'],'Owner_Name':Details['OwnerName'],'Arrival':{'Date':Time.GetDate(),'Time':Time.GetTime()},'Station':StationID})
+    SpacesUsed[Details['Vehicle_Type']]['Occupied'] += 1
     print("\n...Record detail saved...")
 
 def Billing(VehicleID):
